@@ -60,16 +60,17 @@ The above command will run the dev server and you will see the application on ht
 ## Project Structure
 
 socialMediaRiskApp
-|-- backend/
-| |_ main.py
-| |_ addiction*model.pkl
-|  
-|-- frontend
-| |* src
-| | |-App.jsx
-| | |-App.css
-| |\_ package.json
-|\_README.md
+├── backend/
+│ ├── main.py
+│ └── addiction_model.pkl
+│
+├── frontend/
+│ ├── src/
+│ │ ├── App.jsx
+│ │ └── App.css
+│ └── package.json
+│
+└── README.md
 
 ## Instruction to use the application
 

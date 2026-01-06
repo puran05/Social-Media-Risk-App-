@@ -7,6 +7,21 @@ This is a full stack web application that predicts the social media addiction ba
 - Machine Learning Prediction : Uses trained ML model to predict the addiction level . Categories are divided onto Low, Medium and High.
 - Interactive UI : React based interface allowing the user to input their data.
 
+## Model Details
+
+- The models is trained on the Students Social Media Addiction data available for public use on Kaggle. Using the features such as the Average Daily Usage Hours, Sleep Hours per night and the Most Used platform to predict the addiction level. The Overall Performance of the model is as followed
+
+### Overall Performance
+
+- Accuracy: 0.79
+- Macro Average : Precision 0.79 , F-1 Score 0.79
+- Weighted Average: Precision 0.79 , Recall 0.79 , F1-Score 0.79
+
+## Data Usage
+
+This project uses a publicly available dataset from Kaggle:
+https://www.kaggle.com/datasets/adilshamim8/social-media-addiction-vs-relationships?select=Students+Social+Media+Addiction.csv
+
 ## Tech Stack
 
 ## Frontend
@@ -90,6 +105,17 @@ The above command will run the dev server and you will see the application on ht
    - Most Used Platfrom : From the dropdown you can select one of the social media app that you use most.
 3. Click on the "Predict Addiction Level"
 4. View you prediction result.
+   ![App Screenshot](screenshot/sc.png)
+
+## Future Enhancement
+
+1. Machine Learning Model Improvements
+
+   - Currently the model only predicts on the basis of limited amount of data. The future goal is to use a newer available data and also advanced model.
+   - Add feature importance visualization so that it shows what contribitutes most to the addiction
+
+2. Data Visualization
+   - Add charts and graph showing the trends of usage using libraries like Chart.js
 
 # Author
 

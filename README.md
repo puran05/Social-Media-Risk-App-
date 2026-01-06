@@ -45,10 +45,21 @@ uvicorn main:app --reload
 
 The backend of will run on http://127.0.0.1:8000
 
+## API Endpoint
+
+/predict
+
+To request a sample response you can use the following
+{
+"Avg_Daily_Usage_Hours": 6,
+"Sleep_Hours_Per_Night": 10,
+"Most_Used_Platform": 5
+}
+
 ## Frontend Setup
 
 cd frontend
-
+cd social-media-addicition-app
 To install the dependencies
 npm install
 
@@ -72,7 +83,7 @@ The above command will run the dev server and you will see the application on ht
 
 ## Instruction to use the application
 
-1. Open the application in your browser at http://localhost"5173
+1. Open the application in your browser at http://localhost:5173
 2. Fill in the form with your information
    - Average Daily Usage ( hours) : Enter the hours you use social media on average
    - Sleep Hours Per Night : Enter your average sleep hours

@@ -69,7 +69,7 @@ the endpoint is working successfully.
 "Avg_Daily_Usage_Hours": 6,
 "Sleep_Hours_Per_Night": 10,
 "Most_Used_Platform": 5
-}
+} ```
 
 ## Frontend Setup
 

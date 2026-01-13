@@ -51,12 +51,14 @@ Before running the project, make sure you have these installed
 Clone the Repository
 
 ## Backend Setup
-
+```
 cd backend
 python -m venv venv
-
+```
 To run the FastAPI server
+```
 uvicorn main:app --reload
+```
 
 The backend of will run on http://127.0.0.1:8000
 

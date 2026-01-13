@@ -64,7 +64,7 @@ The backend of will run on http://127.0.0.1:8000
 Once your backend server is running. You can test the api by using Postman or any other tool of your preference
 The endpoint is http://127.0.0.1:8000/predict . Below is a sample JSON request that you can send to make sure 
 the endpoint is working successfully. 
-
+```json
 {
 "Avg_Daily_Usage_Hours": 6,
 "Sleep_Hours_Per_Night": 10,

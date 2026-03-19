@@ -76,11 +76,9 @@ def signup(user:UserSignup):
   
 
 @app.get("/login/")
-def login(userprofile: UserLogin):
-    
+def login(userprofile: UserLogin):    
     conn = sqlite3.connect("./database/database.db",check_same_thread=False)
     cursor = conn.cursor()
-
     cursor.execute(
         """
         SELECT username, first_name , last_name
@@ -89,7 +87,6 @@ def login(userprofile: UserLogin):
         """,
         (userprofile.username,)
     )
-
     row = cursor.fetchone()
 
     if row:

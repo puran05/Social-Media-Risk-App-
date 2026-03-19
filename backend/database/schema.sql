@@ -25,3 +25,5 @@ CREATE TABLE daily_entries(
 
 INSERT INTO users (first_name, last_name, username)
  VALUES ('First', 'Person','fperson','')  
+
+ 

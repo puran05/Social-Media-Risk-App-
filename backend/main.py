@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import sqlite3
@@ -81,7 +81,7 @@ def login(userprofile: UserLogin):
     cursor = conn.cursor()
     cursor.execute(
         """
-        SELECT username, first_name , last_name
+        SELECT username, first_name , last_name, password_hash
         FROM users 
         WHERE username = ?
         """,
@@ -90,7 +90,11 @@ def login(userprofile: UserLogin):
     row = cursor.fetchone()
 
     if row:
-        username, first_name, last_name = row
+        username, first_name, last_name, password_hash = row
+        try:
+            ph.verify(password_hash, userprofile.password)
+        except VerifyMismatchError:
+            raise HTTPException(status_code=401, detail="Invalid Credentials")
         return {"username":username,"first_name":first_name,"last_name":last_name}
     else:
-        return {"error":"User not found "}
+        return HTTPException(status_code=401, detail="Invalid Credentials")

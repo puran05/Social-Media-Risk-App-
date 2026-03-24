@@ -1,0 +1,36 @@
+.emailError {
+    color: red;
+    text-align: center;
+    display: none;
+}
+
+.content h2 {
+    color: white;
+    padding-bottom: 1em;
+    font-size: 22px;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+}
+
+.signUp button {
+    background: aliceblue !important;
+    color: rgb(84, 83, 83);
+    padding-left: 2em;
+    padding-right: 2em;
+}
+
+.error-card {
+    background: white;
+    border-radius: 16px;
+    padding: 30px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.heading-error {
+    color: red !important;
+}

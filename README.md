@@ -24,6 +24,14 @@ https://www.kaggle.com/datasets/adilshamim8/social-media-addiction-vs-relationsh
 
 ## Tech Stack
 
+## Project Progress
+
+### In Progress
+
+- SQLite database integration
+- Database schema design for user profile and daily entries
+- Password hashing and secure user data storage
+
 ## Frontend
 
 - React.js
@@ -37,6 +45,7 @@ https://www.kaggle.com/datasets/adilshamim8/social-media-addiction-vs-relationsh
 - Scikit-learn
 - Pandas
 - Joblib
+- Argon2
 
 ## Prerequisites
 
@@ -51,28 +60,33 @@ Before running the project, make sure you have these installed
 Clone the Repository
 
 ## Backend Setup
+
 ```
 cd backend
 python -m venv venv
 ```
+
 To run the FastAPI server
+
 ```
 uvicorn main:app --reload
 ```
 
 The backend of will run on http://127.0.0.1:8000
 
-## Test the API 
+## Test the API
+
 Once your backend server is running. You can test the api by using Postman or any other tool of your preference
-The endpoint is http://127.0.0.1:8000/predict . Below is a sample JSON request that you can send to make sure 
-the endpoint is working successfully. 
+The endpoint is http://127.0.0.1:8000/predict . Below is a sample JSON request that you can send to make sure
+the endpoint is working successfully.
+
 ```json
 {
-"Avg_Daily_Usage_Hours": 6,
-"Sleep_Hours_Per_Night": 10,
-"Most_Used_Platform": 5
+  "Avg_Daily_Usage_Hours": 6,
+  "Sleep_Hours_Per_Night": 10,
+  "Most_Used_Platform": 5
 }
- ```
+```
 
 ## Frontend Setup
 
@@ -110,10 +124,14 @@ The above command will run the dev server and you will see the application on ht
 4. View you prediction result.
    ![App Screenshot](screenshot/sc.png)
 
+## Current Progress
+
+- Working on adding the user profile so that the user can login and save their daily progress report
+- Once the progress is saved, the user should be able to see the history or the pattern along with suggestions to improve the habit.
+
 ## Future Enhancement
 
 1. Machine Learning Model Improvements
-
    - Currently the model only predicts on the basis of limited amount of data. The future goal is to use a newer available data and also advanced model.
    - Add feature importance visualization so that it shows what contribitutes most to the addiction
 

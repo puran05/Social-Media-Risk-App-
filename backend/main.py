@@ -75,13 +75,13 @@ def signup(user:UserSignup):
 
   
 
-@app.get("/login/")
+@app.post("/login/")
 def login(userprofile: UserLogin):    
     conn = sqlite3.connect("./database/database.db",check_same_thread=False)
     cursor = conn.cursor()
     cursor.execute(
         """
-        SELECT username, first_name , last_name, password_hash
+        SELECT user_id,username, first_name , last_name, password_hash
         FROM users 
         WHERE username = ?
         """,
@@ -90,11 +90,11 @@ def login(userprofile: UserLogin):
     row = cursor.fetchone()
 
     if row:
-        username, first_name, last_name, password_hash = row
+        user_id,username, first_name, last_name, password_hash = row
         try:
             ph.verify(password_hash, userprofile.password)
         except VerifyMismatchError:
             raise HTTPException(status_code=401, detail="Invalid Credentials")
-        return {"username":username,"first_name":first_name,"last_name":last_name}
+        return {"user_id":user_id,"username":username,"first_name":first_name,"last_name":last_name}
     else:
-        return HTTPException(status_code=401, detail="Invalid Credentials")
+        raise HTTPException(status_code=401, detail="Invalid Credentials")

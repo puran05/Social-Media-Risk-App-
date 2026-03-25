@@ -2,17 +2,26 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import "./auth.css";
 import Signup from "./Signup";
+import { useNavigate } from "react-router";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  let navigate = useNavigate();
 
+  function setLocalStorage(data) {
+    localStorage.setItem("user_id", data.user_id);
+    localStorage.setItem("first_name", data.first_name);
+  }
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     setLoading(true);
-
+    //username:testperson@gmail.com
+    // password: test1
+    // testuser2@gmail.com
+    //test2
     const payload = {
       username: email,
       password: password,
@@ -26,7 +35,11 @@ export default function Login() {
       });
 
       const data = await response.json();
-      console.log(data);
+      console.log("This is data printing from logn", data);
+      if (response.ok) {
+        setLocalStorage(data);
+        navigate("/card");
+      }
     } catch (err) {
       setLoading(false);
       console.error("===Error in Login==");
@@ -58,7 +71,9 @@ export default function Login() {
               />
             </label>
 
-            <button type="submit">Submit</button>
+            <button type="submit" disabled={loading}>
+              Submit
+            </button>
 
             <div className="emailError">
               <p> Your email and password doesnt match our result </p>

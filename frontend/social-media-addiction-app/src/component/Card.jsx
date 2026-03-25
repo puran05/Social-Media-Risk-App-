@@ -1,11 +1,18 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 export default function Card() {
   const [usageHours, setUsageHours] = useState("");
   const [sleepHours, setSleepHours] = useState("");
   const [platform, setPlatform] = useState("");
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
-  const username = "Totoro";
+  const [userId, setUserId] = useState(null);
+  const [userName, setUserName] = useState("");
+
+  useEffect(() => {
+    setUserId(localStorage.getItem("user_id"));
+    setUserName(localStorage.getItem("first_name"));
+  }, []);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -41,7 +48,7 @@ export default function Card() {
   return (
     <div className="container">
       <div className="content">
-        <h1>Hi {username},</h1>
+        <h1>Hi {userName},</h1>
         <p className="subtitle">
           Please enter you data for $date to check your social media usage
         </p>

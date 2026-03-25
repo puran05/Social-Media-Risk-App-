@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Navigate } from "react-router-dom";
 import "./auth.css";
 import Login from "./Login";
 import LoadingIcons from "react-loading-icons";

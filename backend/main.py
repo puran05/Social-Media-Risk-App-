@@ -27,7 +27,7 @@ class UserInput(BaseModel):
     Avg_Daily_Usage_Hours: float
     Sleep_Hours_Per_Night: float
     Most_Used_Platform: str
-
+    User_Id: float
 #class for usersignup 
 
 class UserSignup(BaseModel):
@@ -47,7 +47,26 @@ def predict_addiction(input_data: UserInput):
 
     prediction = model.predict(df)
 
-    return {"Addiction_Level": prediction[0]}
+    try:
+        conn = sqlite3.connect("./database/database.db", check_same_thread=False)
+        cursor = conn.cursor()
+
+        cursor.execute(
+        """
+        INSERT INTO daily_entries (user_id,avg_daily_usage_hours,sleep_hours_per_night,most_used_platform,addiction_result)
+        VALUES (?,?,?,?,?)
+        """,
+        (input_data.User_Id,input_data.Avg_Daily_Usage_Hours,input_data.Sleep_Hours_Per_Night,input_data.Most_Used_Platform,prediction[0])
+        )
+
+        conn.commit()
+        return{
+            "message": "User daily data added successfully",
+            "Addiction_Level": prediction[0]
+            }
+    except sqlite3.IntegrityError:
+        raise HTTPException(status_code=400)
+
 
 # Endpoint for the signup page 
 @app.post("/signup")
@@ -66,7 +85,6 @@ def signup(user:UserSignup):
             (user.username,user.first_name,user.last_name,hashed_password)
         )
 
-        conn.commit()
         conn.commit()
 
         return{"message":"User created sucessfully"}

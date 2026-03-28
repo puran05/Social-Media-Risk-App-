@@ -22,6 +22,7 @@ export default function Card() {
       Avg_Daily_Usage_Hours: Number(usageHours),
       Sleep_Hours_Per_Night: Number(sleepHours),
       Most_Used_Platform: platform,
+      User_Id: userId,
     };
 
     try {
@@ -32,6 +33,7 @@ export default function Card() {
       });
 
       const data = await response.json();
+      console.log(data);
 
       setResult(data.Addiction_Level);
     } catch (err) {

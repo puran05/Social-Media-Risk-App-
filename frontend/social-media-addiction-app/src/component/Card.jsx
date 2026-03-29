@@ -8,6 +8,12 @@ export default function Card() {
   const [userId, setUserId] = useState(null);
   const [userName, setUserName] = useState("");
 
+  const formattedDate = new Date().toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+
   useEffect(() => {
     setUserId(localStorage.getItem("user_id"));
     setUserName(localStorage.getItem("first_name"));
@@ -47,12 +53,14 @@ export default function Card() {
     setLoading(false);
     console.log("=== DONE ===");
   };
+
   return (
     <div className="container">
       <div className="content">
         <h1>Hi {userName},</h1>
         <p className="subtitle">
-          Please enter you data for $date to check your social media usage
+          Please enter you data for {formattedDate} to check your social media
+          usage
         </p>
 
         <form className="card" onSubmit={handleSubmit}>

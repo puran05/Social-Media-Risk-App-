@@ -6,6 +6,7 @@ import joblib
 import pandas as pd 
 from argon2 import PasswordHasher
 from argon2.exceptions import VerifyMismatchError
+import datetime
 
 # This will load the model that we have saved in teh pkl file 
 model = joblib.load("addiction_model.pkl")
@@ -47,9 +48,22 @@ def predict_addiction(input_data: UserInput):
 
     prediction = model.predict(df)
 
+    today = datetime.date.today().isoformat()    
+    conn = None
+
     try:
         conn = sqlite3.connect("./database/database.db", check_same_thread=False)
         cursor = conn.cursor()
+
+        cursor.execute(
+            """
+            SELECT user_id FROM daily_entries WHERE user_id = ? AND date= ?
+            """,
+        (input_data.User_Id, today)
+        )
+
+        if cursor.fetchone():
+            raise HTTPException(status_code=429, detail =" You have already submitted your report for today")
 
         cursor.execute(
         """
@@ -64,8 +78,15 @@ def predict_addiction(input_data: UserInput):
             "message": "User daily data added successfully",
             "Addiction_Level": prediction[0]
             }
+    except HTTPException:
+        raise 
     except sqlite3.IntegrityError:
-        raise HTTPException(status_code=400)
+        raise HTTPException(status_code=429, detail= "You have already submitted for today")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+    finally:
+        if conn:
+            conn.close()
 
 
 # Endpoint for the signup page 

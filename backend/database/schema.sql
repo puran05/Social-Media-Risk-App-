@@ -26,4 +26,4 @@ CREATE TABLE daily_entries(
 INSERT INTO users (first_name, last_name, username)
  VALUES ('First', 'Person','fperson','')  
 
- 
+ CREATE UNIQUE INDEX one_per_day ON daily_entries (user_id,date);

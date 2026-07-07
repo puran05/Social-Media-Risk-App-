@@ -1,0 +1,122 @@
+name: PR Review Report
+
+on:
+  pull_request_review:
+    types: [submitted]
+  pull_request_review_comment:
+    types: [created]
+
+jobs:
+  generate-report:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Fetch review comments
+        run: |
+          PR_NUMBER=${{ github.event.pull_request.number }}
+          REPO=${{ github.repository }}
+
+          curl -s \
+            -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/$REPO/pulls/$PR_NUMBER/comments" \
+            -o inline_comments.json
+
+          curl -s \
+            -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/$REPO/pulls/$PR_NUMBER/reviews" \
+            -o reviews.json
+
+      - name: Generate report
+        run: |
+          PR_NUMBER=${{ github.event.pull_request.number }}
+          PR_TITLE="${{ github.event.pull_request.title }}"
+          AUTHOR="${{ github.event.pull_request.user.login }}"
+          REPO=${{ github.repository }}
+          DATE=$(date '+%Y-%m-%d %H:%M UTC')
+
+          cat <<EOF > report.md
+          # PR Review Report
+
+          | Field        | Value |
+          |---|---|
+          | **Repo**     | $REPO |
+          | **PR**       | #$PR_NUMBER — $PR_TITLE |
+          | **Author**   | $AUTHOR |
+          | **Generated**| $DATE |
+
+          ---
+
+          ## Review Summaries
+          EOF
+
+          python3 -c "
+          import json
+
+          with open('reviews.json') as f:
+              reviews = json.load(f)
+
+          if not reviews:
+              print('_No reviews submitted yet._')
+          else:
+              for r in reviews:
+                  reviewer = r.get('user', {}).get('login', 'Unknown')
+                  state = r.get('state', '')
+                  body = r.get('body', '').strip()
+                  print(f'### Reviewer: {reviewer}')
+                  print(f'**State:** {state}')
+                  print()
+                  print(body if body else '_No summary written._')
+                  print()
+                  print('---')
+                  print()
+          " >> report.md
+
+          cat <<EOF >> report.md
+
+          ## Inline Comments
+          EOF
+
+          python3 -c "
+          import json
+
+          with open('inline_comments.json') as f:
+              comments = json.load(f)
+
+          if not comments:
+              print('_No inline comments._')
+          else:
+              for c in comments:
+                  reviewer = c.get('user', {}).get('login', 'Unknown')
+                  path = c.get('path', 'Unknown file')
+                  line = c.get('line') or c.get('original_line', '?')
+                  body = c.get('body', '').strip()
+                  print(f'### \`{path}\` — Line {line}')
+                  print(f'**Reviewer:** {reviewer}')
+                  print()
+                  print(body)
+                  print()
+                  print('---')
+                  print()
+          " >> report.md
+
+      - name: Upload report as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: pr-review-report-pr-${{ github.event.pull_request.number }}
+          path: report.md
+          retention-days: 90
+
+      - name: Post report link as PR comment
+        run: |
+          RUN_URL="https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+
+          curl -s -X POST \
+            -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.pull_request.number }}/comments" \
+            -d "{\"body\": \"✅ **Review report generated.**\\n\\nDownload it from the [Actions run]($RUN_URL) under *Artifacts*.\"}"

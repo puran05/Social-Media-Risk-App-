@@ -1,4 +1,4 @@
-# Social Media Addiction Predictor App 
+# Social Media Addiction Predictor Application
 
 This is a full stack web application that predicts the social media addiction based on the user input. The app uses machine learning to predict the addiction level.
 
